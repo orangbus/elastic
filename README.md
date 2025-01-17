@@ -7,7 +7,7 @@ elasticsearch: 8.x
 ## 快速开始
 1、install
 ```bash
-go get -u github.com/orangbus/goravel-elastic
+go get -u github.com/orangbus/elastic
 ```
 
 2、Register service provider
@@ -21,7 +21,7 @@ import "github.com/orangbus/elastic"
 
 3、 Publish Configuration
 ```bash
-go run . artisan vendor:publish --package=github.com/orangbus/goravel-elastic
+go run . artisan vendor:publish --package=github.com/orangbus/elastic
 ```
 3、add `.env`(多个用`,`分割)
 ```
