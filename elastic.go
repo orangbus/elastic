@@ -12,6 +12,7 @@ import (
 	"github.com/orangbus/elastic/pkg/document"
 	index2 "github.com/orangbus/elastic/pkg/index"
 	"github.com/spf13/cast"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -58,7 +59,7 @@ func (e *Elastic) Client() *elasticsearch.TypedClient {
 	return e.client
 }
 
-func (e *Elastic) Search(indexName string, query map[string]interface{}, page int, limit ...int) ([]interface{}, int64, error) {
+func (e *Elastic) Search(indexName string, query map[string]interface{}, page int, limit ...int) ([]any, int64, error) {
 	var list []interface{}
 	var total int64
 	var size int
@@ -85,7 +86,7 @@ func (e *Elastic) Search(indexName string, query map[string]interface{}, page in
 		return list, total, err
 	}
 	for _, item := range res.Hits.Hits {
-		var data interface{}
+		var data any
 		err := json.Unmarshal(item.Source_, &data)
 		if err == nil {
 			list = append(list, data)

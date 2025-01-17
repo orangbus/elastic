@@ -3,6 +3,7 @@ module github.com/orangbus/elastic
 go 1.23.4
 
 require (
+	github.com/bxcodec/faker/v3 v3.8.1
 	github.com/elastic/go-elasticsearch/v8 v8.17.0
 	github.com/goravel/framework v1.15.2
 	github.com/spf13/cast v1.7.1
