@@ -12,7 +12,6 @@ import (
 	"github.com/orangbus/elastic/pkg/document"
 	index2 "github.com/orangbus/elastic/pkg/index"
 	"github.com/spf13/cast"
-	"log"
 	"net/http"
 	"strings"
 	"time"
