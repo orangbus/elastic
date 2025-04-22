@@ -155,7 +155,7 @@ func TestDelete(t *testing.T) {
 
 func TestFirst(t *testing.T) {
 	id := 1000
-	data, err := facades.Elastic().First(indexName, id)
+	data, err := facades.Elastic().Document().First(indexName, id)
 	if err != nil {
 		t.Log(err)
 		return
