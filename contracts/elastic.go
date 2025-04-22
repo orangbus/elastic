@@ -10,7 +10,7 @@ import (
 type Elastic interface {
 	Client() *elasticsearch.TypedClient
 	Version() (*info.Response, error)
-	Search(indexName string, query map[string]interface{}, page int, limit ...int) ([]interface{}, int64, error)
+	Search(indexName string, query map[string]interface{}, page int, limit ...int) ([]byte, int64, error)
 
 	Mapping(indexName string, body map[string]interface{}) error
 	IndexCreate(indexName string) error

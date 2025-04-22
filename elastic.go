@@ -58,7 +58,7 @@ func (e *Elastic) Client() *elasticsearch.TypedClient {
 	return e.client
 }
 
-func (e *Elastic) Search(indexName string, query map[string]interface{}, page int, limit ...int) ([]any, int64, error) {
+func (e *Elastic) Search(indexName string, query map[string]interface{}, page int, limit ...int) ([]byte, int64, error) {
 	var list []interface{}
 	var total int64
 	var size int
@@ -72,29 +72,27 @@ func (e *Elastic) Search(indexName string, query map[string]interface{}, page in
 	if size <= 0 || size > 100 {
 		size = 20
 	}
-	query["from"] = (size - 1) * size
+	query["from"] = (page - 1) * size
 	query["size"] = size
 
 	marshal, err := json.Marshal(query)
 	if err != nil {
-		return list, total, err
+		return nil, total, err
 	}
 	reader := bytes.NewReader(marshal)
 	res, err2 := e.client.Search().Index(indexName).Raw(reader).Do(context.Background())
 	if err2 != nil {
-		return list, total, err
+		return nil, total, err2
 	}
 	for _, item := range res.Hits.Hits {
-		var data any
-		err := json.Unmarshal(item.Source_, &data)
-		if err == nil {
-			list = append(list, data)
-		} else {
-			facades.Log().Warning("elasticsearch Unmarshal error: %s", err.Error())
-		}
+		list = append(list, item.Source_)
+	}
+	data, err := json.Marshal(list)
+	if err != nil {
+		return nil, total, err
 	}
 	total = res.Hits.Total.Value
-	return list, total, nil
+	return data, total, nil
 }
 
 func (e *Elastic) IndexCreate(indexName string) error {

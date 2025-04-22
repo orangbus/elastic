@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	indexName = "user"
+	indexName = "movie"
 )
 
 func init() {
@@ -104,10 +104,33 @@ func TestBulk(t *testing.T) {
 }
 
 func TestSearch(t *testing.T) {
+	//query := map[string]interface{}{
+	//	"query": map[string]interface{}{
+	//		"match": map[string]interface{}{
+	//			"name": "斗罗",
+	//		},
+	//	},
+	//}
 	query := map[string]interface{}{
 		"query": map[string]interface{}{
-			"match": map[string]interface{}{
-				"name": "jnmfKkE",
+			"bool": map[string]interface{}{
+				"must": []map[string]interface{}{
+					//{
+					//	"match": map[string]interface{}{
+					//		"vod_name": keyword,
+					//	},
+					//},
+					{
+						"term": map[string]interface{}{
+							"api_id": 82,
+						},
+					},
+					//{
+					//	"term": map[string]interface{}{
+					//		"type_id": typeId,
+					//	},
+					//},
+				},
 			},
 		},
 	}
@@ -117,7 +140,7 @@ func TestSearch(t *testing.T) {
 		return
 	}
 	t.Logf("total:%d", total)
-	t.Logf("%v", list)
+	t.Log(string(list))
 }
 
 func TestDelete(t *testing.T) {
@@ -128,4 +151,14 @@ func TestDelete(t *testing.T) {
 		return
 	}
 	t.Logf("document id:%s deleted", id)
+}
+
+func TestFirst(t *testing.T) {
+	id := 1000
+	data, err := facades.Elastic().First(indexName, id)
+	if err != nil {
+		t.Log(err)
+		return
+	}
+	t.Log(string(data))
 }
